@@ -1,10 +1,9 @@
 const express = require("express");
 const app = express();
+const userRouter = require("./routes/userRoutes.routes");
 
-app.post("/login", (req, res) => {
-  res.status(200).send("<h1>LOGIN PAGE</h1>");
-});
-app.post("/register", (req, res) => {
-  res.status(200).send("<h1>REGISTER PAGE</h1>");
+app.use(userRouter);
+app.use((req, res) => {
+  res.status(401).send("page doesn't exist");
 });
 module.exports = app;
