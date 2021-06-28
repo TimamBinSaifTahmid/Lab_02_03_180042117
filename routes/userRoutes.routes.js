@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyPerser = require("body-parser");
+const islogin = require("./../middleware/userMiddlewire.middlewire");
 const router = express.Router();
 const {
   getRegister,
@@ -14,5 +15,6 @@ router.get("/login", getLogin);
 router.post("/login", postLogin);
 router.get("/register", getRegister);
 router.post("/register", postRegister);
-router.get("/dashboard", getDashboard);
+router.get("/dashboard", islogin, getDashboard);
+router.get("/", islogin, getDashboard);
 module.exports = router;
