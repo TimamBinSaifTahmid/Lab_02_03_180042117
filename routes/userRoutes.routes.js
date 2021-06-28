@@ -1,4 +1,6 @@
 const express = require("express");
+const bodyPerser = require("body-parser");
+const router = express.Router();
 const {
   getRegister,
   postRegister,
@@ -6,14 +8,11 @@ const {
   postLogin,
   getDashboard,
 } = require("./../controller/userController.controller");
-const router = express.Router();
+router.use(bodyPerser.urlencoded({ extended: false }));
+router.use(bodyPerser.json());
 router.get("/login", getLogin);
-router.post("/login", (req, res) => {
-  res.status(200).send("<h1>LOGIN PAGE</h1>");
-});
+router.post("/login", postLogin);
 router.get("/register", getRegister);
-router.post("/register", (req, res) => {
-  res.status(200).send("<h1>REGISTER PAGE</h1>");
-});
+router.post("/register", postRegister);
 router.get("/dashboard", getDashboard);
 module.exports = router;

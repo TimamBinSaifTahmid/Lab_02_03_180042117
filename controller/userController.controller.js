@@ -3,15 +3,19 @@ const getRegister = (req, res) => {
 };
 
 const postRegister = (req, res) => {
-  res.send("asdas");
+  const { name, email, password, retypedPassword } = req.body;
+  console.log(name, email, password);
+  res.sendFile("login-v2.html", { root: "./views/userViews" });
 };
-
+const add_to_database = () => {};
 const getLogin = (req, res) => {
   res.sendFile("login-v2.html", { root: "./views/userViews" });
 };
 
 const postLogin = (req, res) => {
-  res.send("dsfs");
+  const { email, password } = req.body;
+  console.log(email, password);
+  res.sendFile("index.html", { root: "./views/userViews" });
 };
 const getDashboard = (req, res) => {
   res.sendFile("index.html", { root: "./views/userViews" });
