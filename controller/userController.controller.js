@@ -1,5 +1,6 @@
 require("dotenv").config();
 let flag = false;
+let userName = "";
 const getRegister = (req, res) => {
   res.sendFile("register-v2.html", { root: "./views/userViews" });
 };
@@ -57,12 +58,16 @@ const postLogin = (req, res) => {
   });
 
   postgres
-    .select("email", "password")
+    .select("name", "email", "password")
     .from("users")
     .where("email", "=", email)
     .then((data) => {
       const isValid = bcrypt.compareSync(password, data[0].password);
       if (isValid) {
+        userName = data[0].name;
+        console.log(userName);
+        const alert = require("alert");
+        alert(userName);
         res.sendFile("index.html", { root: "./views/userViews" });
         flag = true;
       } else res.status(400).json("wrong credential");
@@ -71,6 +76,9 @@ const postLogin = (req, res) => {
 };
 const islogin = () => {
   return flag;
+};
+const getname = () => {
+  return userName;
 };
 const getDashboard = (req, res) => {
   res.sendFile("index.html", { root: "./views/userViews" });
