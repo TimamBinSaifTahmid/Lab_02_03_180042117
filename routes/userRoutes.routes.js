@@ -1,6 +1,9 @@
 const express = require("express");
 const bodyPerser = require("body-parser");
-const islogin = require("./../middleware/userMiddlewire.middlewire");
+const {
+  isloginuser,
+  ensureAuthenticated,
+} = require("./../middleware/userMiddlewire.middlewire");
 const router = express.Router();
 const {
   getRegister,
@@ -8,6 +11,7 @@ const {
   getLogin,
   postLogin,
   getDashboard,
+  getHomepage,
 } = require("./../controller/userController.controller");
 router.use(bodyPerser.urlencoded({ extended: false }));
 router.use(bodyPerser.json());
@@ -15,6 +19,10 @@ router.get("/login", getLogin);
 router.post("/login", postLogin);
 router.get("/register", getRegister);
 router.post("/register", postRegister);
-router.get("/dashboard", islogin, getDashboard);
-router.get("/", islogin, getDashboard);
+router.get("/dashboard", ensureAuthenticated, getDashboard);
+router.get("/logout", (req, res) => {
+  req.logout();
+  res.redirect("/");
+});
+router.get("/", getHomepage);
 module.exports = router;

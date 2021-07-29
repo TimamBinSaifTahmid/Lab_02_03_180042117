@@ -15,4 +15,13 @@ const isloginuser = (req, res, next) => {
     next();
   }
 };
-module.exports = isloginuser;
+const ensureAuthenticated = (req, res, next) => {
+  console.log(req.isAuthenticated());
+  console.log(req.user);
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+};
+module.exports = { isloginuser, ensureAuthenticated };

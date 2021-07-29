@@ -1,19 +1,36 @@
 require("dotenv").config();
 let flag = false;
 let userName = "";
+const passport = require("passport");
+
 const getRegister = (req, res) => {
-  res.sendFile("register-v2.html", { root: "./views/userViews" });
+  //console.log("asdsad", req.flash("errors"));
+
+  res.render("userViews/register-v2.ejs", { errors: req.flash("errors") });
 };
 
 const postRegister = (req, res) => {
+  const { user, userCreation } = require("./../model/userModel");
   const { name, email, password, retypedPassword } = req.body;
-  if (
-    name != "" &&
-    email != "" &&
-    password.length >= 6 &&
-    password === retypedPassword
-  ) {
-    console.log(name, email, password);
+  //Data Validation
+  // console.log(name, email, password, retypedPassword);
+  const errors = [];
+  if (!name || !email || !password || !retypedPassword) {
+    errors.push("All fields are required!");
+  }
+  if (password.length < 6) {
+    errors.push("Password must be at least 6 characters!");
+  }
+  if (password !== retypedPassword) {
+    errors.push("Passwords do not match!");
+  }
+
+  if (errors.length > 0) {
+    req.flash("errors", errors);
+    res.redirect("/register");
+  } else {
+    // console.log(name, email, password);
+    userCreation(name, email, password);
     const bcrypt = require("bcrypt-nodejs");
     const knex = require("knex");
     const postgres = knex({
@@ -28,51 +45,33 @@ const postRegister = (req, res) => {
     const hash = bcrypt.hashSync(password);
     postgres("users")
       .insert({
-        name: name,
-        email: email,
+        name: user.name,
+        email: user.email,
         password: hash,
       })
       .then(() => {
-        res.sendFile("login-v2.html", { root: "./views/userViews" });
+        res.redirect("/login");
       })
-      .catch((err) => res.status(400).json("unable to register"));
-  } else res.send("ERROR CANT REGISTER USER.");
+      .catch((err) => {
+        errors.push("user already exists with this email");
+        console.log(err.detail);
+        req.flash("errors", errors);
+        res.redirect("/register");
+      });
+  }
 };
 
 const getLogin = (req, res) => {
-  res.sendFile("login-v2.html", { root: "./views/userViews" });
+  res.render("userViews/login-v2.ejs", { error: req.flash("error") });
 };
 
-const postLogin = (req, res) => {
-  const { email, password } = req.body;
-  const bcrypt = require("bcrypt-nodejs");
-  const knex = require("knex");
-  const postgres = knex({
-    client: process.env.client,
-    connection: {
-      host: process.env.host,
-      user: process.env.user,
-      password: process.env.password,
-      database: process.env.database,
-    },
-  });
-
-  postgres
-    .select("name", "email", "password")
-    .from("users")
-    .where("email", "=", email)
-    .then((data) => {
-      const isValid = bcrypt.compareSync(password, data[0].password);
-      if (isValid) {
-        userName = data[0].name;
-        console.log(userName);
-        const alert = require("alert");
-        alert(userName);
-        res.sendFile("index.html", { root: "./views/userViews" });
-        flag = true;
-      } else res.status(400).json("wrong credential");
-    })
-    .catch((err) => res.status(400).json("wrong credential"));
+const postLogin = (req, res, next) => {
+  flag = true;
+  passport.authenticate("local", {
+    successRedirect: "/dashboard",
+    failureRedirect: "/login",
+    failureFlash: true,
+  })(req, res, next);
 };
 const islogin = () => {
   return flag;
@@ -80,8 +79,13 @@ const islogin = () => {
 const getname = () => {
   return userName;
 };
+
+const getHomepage = (req, res) => {
+  res.render("welcome.ejs");
+};
 const getDashboard = (req, res) => {
-  res.sendFile("index.html", { root: "./views/userViews" });
+  const { user, userCreation } = require("./../model/userModel");
+  res.render("index.ejs", { user: user });
   flag = false;
 };
 module.exports = {
@@ -91,4 +95,5 @@ module.exports = {
   postLogin,
   getDashboard,
   islogin,
+  getHomepage,
 };
