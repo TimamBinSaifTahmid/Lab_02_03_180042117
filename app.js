@@ -5,6 +5,8 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const app = express();
 const userRouter = require("./routes/userRoutes.routes");
+const MathOlympiadRouter = require("./routes/MathOlympiad.routes");
+const ProgrammingContestRouter = require("./routes/programmingContest.routes");
 require("./config/passport")(passport);
 
 app.use(express.static("public"));
@@ -24,6 +26,8 @@ app.use(passport.session());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(userRouter);
+app.use(MathOlympiadRouter);
+app.use(ProgrammingContestRouter);
 
 app.use((req, res) => {
   res.status(401).send("page doesn't exist");

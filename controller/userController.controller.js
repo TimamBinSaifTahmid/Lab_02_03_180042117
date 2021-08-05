@@ -6,22 +6,23 @@ const passport = require("passport");
 const getRegister = (req, res) => {
   //console.log("asdsad", req.flash("errors"));
 
-  res.render("userViews/register-v2.ejs", { errors: req.flash("errors") });
+  res.render("users/register.ejs", { errors: req.flash("errors") });
 };
 
 const postRegister = (req, res) => {
   const { user, userCreation } = require("./../model/userModel");
-  const { name, email, password, retypedPassword } = req.body;
+  const { name, email, password, confirm_password } = req.body;
+  console.log(name, email, password, confirm_password);
   //Data Validation
   // console.log(name, email, password, retypedPassword);
   const errors = [];
-  if (!name || !email || !password || !retypedPassword) {
+  if (!name || !email || !password || !confirm_password) {
     errors.push("All fields are required!");
   }
   if (password.length < 6) {
     errors.push("Password must be at least 6 characters!");
   }
-  if (password !== retypedPassword) {
+  if (password !== confirm_password) {
     errors.push("Passwords do not match!");
   }
 
@@ -29,8 +30,8 @@ const postRegister = (req, res) => {
     req.flash("errors", errors);
     res.redirect("/register");
   } else {
-    // console.log(name, email, password);
-    userCreation(name, email, password);
+    console.log(name, email, password);
+    //  userCreation(name, email, password);
     const bcrypt = require("bcrypt-nodejs");
     const knex = require("knex");
     const postgres = knex({
@@ -45,12 +46,29 @@ const postRegister = (req, res) => {
     const hash = bcrypt.hashSync(password);
     postgres("users")
       .insert({
-        name: user.name,
-        email: user.email,
+        name: name,
+        email: email,
         password: hash,
       })
       .then(() => {
-        res.redirect("/login");
+        postgres("users")
+          .select("*")
+          .where("email", "=", email)
+          .then((user1) => {
+            userCreation(
+              user1[0].id,
+              user1[0].name,
+              user1[0].email,
+              user1[0].password
+            );
+            res.redirect("/login");
+          })
+          .catch((err) => {
+            errors.push("user already exists with this email");
+            console.log(err.detail);
+            req.flash("errors", errors);
+            res.redirect("/register");
+          });
       })
       .catch((err) => {
         errors.push("user already exists with this email");
@@ -62,7 +80,7 @@ const postRegister = (req, res) => {
 };
 
 const getLogin = (req, res) => {
-  res.render("userViews/login-v2.ejs", { error: req.flash("error") });
+  res.render("users/login.ejs", { error: req.flash("error") });
 };
 
 const postLogin = (req, res, next) => {
@@ -85,8 +103,7 @@ const getHomepage = (req, res) => {
 };
 const getDashboard = (req, res) => {
   const { user, userCreation } = require("./../model/userModel");
-  res.render("index.ejs", { user: user });
-  flag = false;
+  res.render("dashboard.ejs", { user: user });
 };
 module.exports = {
   getRegister,

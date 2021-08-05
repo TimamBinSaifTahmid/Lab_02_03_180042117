@@ -15,6 +15,14 @@ const isloginuser = (req, res, next) => {
     next();
   }
 };
+
+const addUserData = (req, res, next) => {
+  res.locals.req = req;
+  res.locals.res = res;
+
+  next();
+};
+
 const ensureAuthenticated = (req, res, next) => {
   console.log(req.isAuthenticated());
   console.log(req.user);
@@ -24,4 +32,4 @@ const ensureAuthenticated = (req, res, next) => {
     res.redirect("/login");
   }
 };
-module.exports = { isloginuser, ensureAuthenticated };
+module.exports = { isloginuser, ensureAuthenticated, addUserData };

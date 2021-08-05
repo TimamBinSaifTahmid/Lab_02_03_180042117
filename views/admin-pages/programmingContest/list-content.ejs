@@ -1,0 +1,150 @@
+<div class="right_col" role="main">
+    <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Math Olympiad<small>Participants List</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li class="dropdown">
+              
+              
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+          </br>
+          <% let success1="participant list retrived successfully!"%>
+          <% let success2="Data is deleted Successfully"%>
+          <% let success3="Successfully completed payment process!"%>
+          <% let success4="Successfully completed selection process!"%>
+          
+          <%if(error.length>0){if(error==success1 || error==success2 || error==success3 ||error==success4) {%>
+            <div class="alert alert-success"><%=error%></div>
+
+        <%}else{%>
+        <div class="alert alert-danger"><%=error%></div>
+        <%}%> <%}%>
+              <div class="row">
+                  <div class="col-sm-12">
+                    <div class="card-box table-responsive">
+            
+            <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>Team Name</th>
+                  <th>Institution</th>
+                  <th>Category</th>
+                  <th>Total</th>
+                  <th>Paid</th>
+                  <th>Selected</th>
+                  <th>Payment<br/>Status</th>
+                  <th>Select</th>
+                  <th>Payment <br/>Done</th>
+                  <th>Edit<br/>Status</th>
+                  <th>Delete</th>
+                 
+                  
+                  <th>Coach T-Shirt</th>
+                  <th>Coach Name</th>
+                  <th>Coach Contact</th>
+                  <th>Coach Email</th>
+                  <th>Team Leader T-Shirt</th>
+                  <th>Team Leader Name</th>
+                  <th>Team Leader Contact</th>
+                  <th>Team Leader Email</th>
+              
+                  <th>Team Member-1 T-Shirt</th>
+                  <th>Team Member-1 Name</th>
+                  <th>Team Member-1 Contact</th>
+                  <th>Team Member-1 Email</th>
+
+                  <th>Team Member-2 T-Shirt</th>
+                  <th>Team Member-2 Name</th>
+                  <th>Team Member-2 Contact</th>
+                  <th>Team Member-2 Email</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+              <%if(participants.length>0){%>
+                  <%participants.forEach(participant=>{%>
+                    <tr>
+                      <td><%=participant.teamname%></td>
+                      <td><%=participant.institutionname%></td>
+                      <td><%=participant.category%></td>
+                      <td><%=participant.total%></td>
+                      <td><%=participant.paid%></td>
+                      
+                      <td> <%if(participant.selected==true){%>
+                            <p>Yes</p>
+                            <%}else{%>
+                             <p>No</p>
+                            <%}%>
+                      </td>
+                      <td>
+                        <%if(participant.paid==participant.total){%>
+                          <p style="color: green;"> success</p> 
+                         <%}else{%>
+                         <p style="color: red;">Incomplete</p>
+                         <%}%>
+                      </td>
+                      <td><% const selectionUrl = '/programmingContest/select/' + participant.id %>
+                        <a href="<%=selectionUrl%>">
+                          <i class="fa fa-check"></i>
+                          <span class ="fa fa-chevron"></span>
+                        </a>
+                      </td>
+                      <td> <% const paymentDoneUrl = '/programmingContest/payment/' + participant.id %>
+                        <a href="<%=paymentDoneUrl%>">
+                          <i class="fa fa-money"></i>
+                          <span class ="fa fa-chevron"></span>
+                        </a>
+                      </td>
+                      <td>
+                        <% const editUrl = '/mathOlympiad/edit/' + participant.id %>
+                        <a href="<%=editUrl%>">
+                        <i class="fa fa-pencil"></i>
+                        <span class ="fa fa-chevron"></span>
+                      </a>
+                    </td>
+                      <td>
+                        <% const deleteUrl = '/programmingContest/delete/' + participant.id %>
+                        <a href="<%=deleteUrl%>">
+                          <i class="fa fa-trash"></i>
+                          <span class ="fa fa-chevron"></span>
+                        </a>
+                      </td>
+                      <td><%=participant.coachtshirt%></td>
+                      <td><%=participant.coachname%></td>
+                      <td><%=participant.coachcontact%></td>
+                      <td><%=participant.coachemail%></td>
+                      <td><%=participant.teamleadertshirt%></td>
+                      <td><%=participant.teamleadername%></td>
+                      <td><%=participant.teamleadercontact%></td>
+                      <td><%=participant.teamleaderemail%></td>
+                      <td><%=participant.firstmembertshirt%></td>
+                      <td><%=participant.firstmembername%></td>
+                      <td><%=participant.firstmembercontact%></td>
+                      <td><%=participant.firstmemberemail%></td>
+                      <td><%=participant.secondmembertshirt%></td>
+                      <td><%=participant.secondmembername%></td>
+                      <td><%=participant.secondmembercontact%></td>
+                      <td><%=participant.secondmemberemail%></td>
+
+                    </tr>
+                 <%})%>
+               <%}%>
+              
+                
+              </tbody>
+            </table>
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+        </div>
+      </div>
+</div>    
