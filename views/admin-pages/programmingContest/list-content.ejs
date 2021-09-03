@@ -18,8 +18,10 @@
           <% let success2="Data is deleted Successfully"%>
           <% let success3="Successfully completed payment process!"%>
           <% let success4="Successfully completed selection process!"%>
+          <% let success5="Data is Updated Successfully"%>
+        
           
-          <%if(error.length>0){if(error==success1 || error==success2 || error==success3 ||error==success4) {%>
+          <%if(error.length>0){if(error==success1 || error==success2 || error==success3 ||error==success4 ||error==success5) {%>
             <div class="alert alert-success"><%=error%></div>
 
         <%}else{%>
@@ -43,7 +45,7 @@
                   <th>Payment <br/>Done</th>
                   <th>Edit<br/>Status</th>
                   <th>Delete</th>
-                 
+                  <th>Team Id</th>
                   
                   <th>Coach T-Shirt</th>
                   <th>Coach Name</th>
@@ -102,7 +104,7 @@
                         </a>
                       </td>
                       <td>
-                        <% const editUrl = '/mathOlympiad/edit/' + participant.id %>
+                        <% const editUrl = '/programmingContest/update/' + participant.id %>
                         <a href="<%=editUrl%>">
                         <i class="fa fa-pencil"></i>
                         <span class ="fa fa-chevron"></span>
@@ -115,6 +117,7 @@
                           <span class ="fa fa-chevron"></span>
                         </a>
                       </td>
+                      <td><%=participant.uniqueid%></td>
                       <td><%=participant.coachtshirt%></td>
                       <td><%=participant.coachname%></td>
                       <td><%=participant.coachcontact%></td>

@@ -11,6 +11,8 @@ const {
   deleteProgrammingContest,
   paymentProgrammingContest,
   selectProgrammingContest,
+  updateProgrammingContest,
+  getUpdateProgrammingContest,
 } = require("./../controller/programmingContest.controller");
 router.get(
   "/programmingContest/register",
@@ -47,6 +49,18 @@ router.get(
   ensureAuthenticated,
   addUserData,
   selectProgrammingContest
+);
+router.post(
+  "/programmingContest/update/:id",
+  ensureAuthenticated,
+  addUserData,
+  updateProgrammingContest
+);
+router.get(
+  "/programmingContest/update/:id",
+  ensureAuthenticated,
+  addUserData,
+  getUpdateProgrammingContest
 );
 
 module.exports = router;

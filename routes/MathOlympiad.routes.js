@@ -51,8 +51,8 @@ router.get(
   addUserData,
   selectMathOlympiad
 );
-router.get(
-  "/mathOlympiad/updateParticipant/:id",
+router.post(
+  "/mathOlympiad/update/:id",
   ensureAuthenticated,
   addUserData,
   updateMathOlympiad

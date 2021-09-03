@@ -6,7 +6,7 @@
             <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Math Olympiad <small>Register Participant</small></h2>
+                        <h2>Math Olympiad <small>Update Participant</small></h2>
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>
@@ -28,18 +28,67 @@
                         <%}else{%>
                         <div class="alert alert-danger"><%=error%></div>
                         <%}%> <%}%>
-                        <form method="POST" action="/mathOlympiad/updateParticipant" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-
+                        <% const paymentDoneUrl = '/mathOlympiad/update/' + ids %>
+                        <form method="POST" action="<%=paymentDoneUrl%>" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                           <%if(participant.name!=""){%>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Name <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="text" id="name" name="name" required="required" class="form-control ">
+                                    <%console.log("asd",participant.name)%>
+                                    <input type="text" id="name" name="name" required="required" class="form-control" value=<%=participant.name%>>
                                 </div>
                             </div>
 
                             <div class="item form-group">
-                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Contact No <span class="required">*</span>
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name" >Contact No <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="contact" name="contact" required="required" class="form-control " value=<%=participant.contact%>>
+                                </div>
+                            </div>
+                           
+
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name" value=<%=participant.email%>>Email
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="email" id="email" name="email" class="form-control " value=<%=participant.email%>>
+                                </div>
+                            </div>
+                            
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name" value="<%=participant.institution%>">Institution <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="institution" name="institution" required="required" class="form-control " value=<%=participant.institution%>>
+                                </div>
+                            </div>
+
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Category <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select class="form-control" id="category" name="category">
+                                        <option disabled>--- Choose Option ---</option>
+                                        <option value="School">School</option>
+                                        <option value="College">College</option>
+                                        <option value="University">University</option>
+                                       
+                                    </select>
+                                </div>
+                            </div>
+                        <%}else{%>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Name <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="name" name="name" required="required" class="form-control" >
+                                </div>
+                            </div>
+
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name" >Contact No <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <input type="text" id="contact" name="contact" required="required" class="form-control ">
@@ -48,7 +97,7 @@
                            
 
                             <div class="item form-group">
-                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Email
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name" >Email
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <input type="email" id="email" name="email" class="form-control ">
@@ -56,7 +105,7 @@
                             </div>
                             
                             <div class="item form-group">
-                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Institution <span class="required">*</span>
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name" >Institution <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <input type="text" id="institution" name="institution" required="required" class="form-control ">
@@ -76,7 +125,7 @@
                                     </select>
                                 </div>
                             </div>
-                              
+                        <%}%> 
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">T-Shirt <span class="required">*</span>
                                 </label>
